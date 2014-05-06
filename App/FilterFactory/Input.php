@@ -4,7 +4,7 @@
  *
  * @author nebiros
  */
-class App_Filter_Input {
+class App_FilterFactory_Input {
     const APPEND = "append";
     const PREPEND = "prepend";
     const SEPARATOR = ", ";
@@ -41,11 +41,11 @@ class App_Filter_Input {
     public function __construct(Array $data = null, Array $options = null) {
         $this->_data = $data;
         
-        if ( null !== $options ) {
+        if (null !== $options) {
             $this->_options = $options;
         }
         
-        $this->_translate = Yasc_App::viewHelper( "translate" );
+        $this->_translate = Yasc_App::viewHelper("translate");
     }
     
     /**
@@ -117,7 +117,7 @@ class App_Filter_Input {
      * @return mixed 
      */
     public function getOption($key, $default = null) {
-        if ( isset($this->_options[$key]) ) {
+        if (isset($this->_options[$key])) {
             return $this->_options[$key];
         }
         
@@ -151,32 +151,32 @@ class App_Filter_Input {
     public function getLineMessages(Array $options = array()) {
         $messages = $this->getMessages();
 
-        if ( empty($messages) ) {
+        if (empty($messages)) {
             return null;
         }
 
-        if ( empty($options["text"])  ) {
+        if (empty($options["text"]) ) {
             $options["text"] = null;
         }
 
-        if ( empty($options["text_position"]) ) {
+        if (empty($options["text_position"])) {
             $options["text_position"] = self::PREPEND;
         }
 
-        if ( empty($options["message_separator"]) ) {
+        if (empty($options["message_separator"])) {
             $options["message_separator"] = self::SEPARATOR;
         }
 
         $fieldMessages = array();
 
-        foreach ( $messages as $field => $rules ) {
+        foreach ($messages as $field => $rules) {
             $fieldMessages[] = implode($options["message_separator"], array_values($rules));
         }
 
         $message = implode($options["message_separator"], $fieldMessages);
 
-        if ( null !== $options["text"] ) {
-            switch ( $options["text_position"] ) {
+        if (null !== $options["text"]) {
+            switch ($options["text_position"]) {
                 case self::APPEND:
                     $message = $message . " " . $options["text"];
                     break;
@@ -196,7 +196,7 @@ class App_Filter_Input {
      * @param string $msg
      * @return App_Filter_Input 
      */
-    public function addMessage( $msg ) {
+    public function addMessage($msg) {
         $this->_messages[] = $msg;
         return $this;
     }
@@ -208,7 +208,7 @@ class App_Filter_Input {
     public function isValid() {
         $this->process();
         
-        if ( empty( $this->_messages ) ) {
+        if (empty($this->_messages)) {
             return true;
         }
         

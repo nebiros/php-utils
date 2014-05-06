@@ -4,7 +4,7 @@
  *
  * @author nebiros
  */
-class App_Filter {
+class App_FilterFactory {
     /**
      *
      * @param string $class
@@ -14,7 +14,7 @@ class App_Filter {
     public static function inputFactory($class, Array $options = array()) {
         $klass = "App_Filter_Input_" . ucfirst($class);
 
-        if ( !class_exists($klass) ) {
+        if (!class_exists($klass)) {
             throw new Exception("filter input class '{$class}' not found");
         }
 

@@ -56,7 +56,7 @@ abstract class App_WidgetFactory_WidgetAbstract implements App_WidgetFactory_Wid
      * @return mixed
      */
     public function getOption($key, $default = null) {
-        if (isset( $this->_options[$key])) {
+        if (isset($this->_options[$key])) {
             return $this->_options[$key];
         }
 
@@ -99,7 +99,7 @@ abstract class App_WidgetFactory_WidgetAbstract implements App_WidgetFactory_Wid
      * @return string
      */
     public function run() {
-        throw new Exception( __METHOD__ . " not implemented" );
+        throw new Exception(__METHOD__ . " not implemented");
     }
 
     /**

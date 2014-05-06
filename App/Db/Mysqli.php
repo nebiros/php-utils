@@ -24,7 +24,7 @@ class App_Db_Mysqli {
         "dbname" => "",
         "fetch_mode" => self::FETCH_ASSOC,
         "charset" => "utf8"
-   );
+    );
     
     /**
      *
@@ -218,7 +218,7 @@ class App_Db_Mysqli {
                     $this->getOption("host"),
                     $this->getOption("username"),
                     $this->getOption("password")
-           ))) {
+            ))) {
                 throw new Exception("mysqli_connect() function error (" . mysqli_connect_error() . ")");
             }
             
@@ -593,7 +593,7 @@ class App_Db_Mysqli {
             "SELECT COUNT(*) AS total_rows FROM",
             "({$query})",
             "AS db_select"
-           ));
+        ));
             
         try {                
             $data = $this->fetchRow($this->query($query));

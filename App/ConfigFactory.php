@@ -95,13 +95,13 @@ class App_ConfigFactory {
         $class = "App_ConfigFactory_" . ucfirst($class);
 
         if (false === class_exists($class)) {
-            throw new Exception( "Configuration class '{$class}' was not found" );
+            throw new Exception("Configuration class '{$class}' was not found");
         }
 
         $adapter = new $class($adapterOptions);
 
         if (false === ($adapter instanceof App_ConfigFactory_ConfigAdapterInterface)) { 
-            throw new Exception( "Configuration class '{$class}' does not implement App_ConfigFactory_ConfigAdapterInterface" );
+            throw new Exception("Configuration class '{$class}' does not implement App_ConfigFactory_ConfigAdapterInterface");
         }
 
         self::$_adapter = $adapter;

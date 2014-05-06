@@ -45,11 +45,11 @@ class App_WidgetFactory_Banners extends App_WidgetFactory_WidgetAbstract {
      * @return string
      */
     protected function _adMob() {
-        if (empty( $this->_config["analytics_id"])) {
+        if (empty($this->_config["analytics_id"])) {
             return "";
         }
         
-        $admobConfig = array(            
+        $admobConfig = array(           
             // Required to request ads. To find your Publisher ID, log in to your AdMob account and click on the "Sites & Apps" tab.
             // "PUBLISHER_ID" => "a14d4c4c1e11b78"
             "PUBLISHER_ID" => $this->_config["publisher_id"],
@@ -62,8 +62,8 @@ class App_WidgetFactory_Banners extends App_WidgetFactory_WidgetAbstract {
             // While testing, set to TRUE. When you are ready to make live requests, set to FALSE.
             "TEST_MODE" => (isset($this->_config["test_mode"])) ? $this->_config["test_mode"] : false,
             // Additional optional parameters are available at: http://developer.admob.com/wiki/AdCodeDocumentation
-            "OPTIONAL" => (isset($this->_config["optional"])) ? ( array ) $this->_config["optional"] : array()
-        );
+            "OPTIONAL" => (isset($this->_config["optional"])) ? (array) $this->_config["optional"] : array()
+       );
 
         // Optional parameters for AdMob Analytics (http://analytics.admob.com)
         
@@ -106,13 +106,13 @@ class App_WidgetFactory_Banners extends App_WidgetFactory_WidgetAbstract {
      * @return void 
      */
     protected function _admobSetCookie($domain = null, $path = "/") {
-        if (!empty( $_COOKIE["admobuu"] ) ) {
+        if (!empty($_COOKIE["admobuu"])) {
             return;
         }
         
         $value = md5(uniqid(rand(), true)) ;
 
-        if (!empty($domain) && $domain[0] != "." ) {
+        if (!empty($domain) && $domain[0] != ".") {
             $domain = ".{$domain}";
         }
         
@@ -191,7 +191,7 @@ class App_WidgetFactory_Banners extends App_WidgetFactory_WidgetAbstract {
             "HTTP_CONNECTION" => true, 
             "HTTP_USER_AGENT" => true, 
             "HTTP_COOKIE" => true
-        );
+       );
         
         foreach ($_SERVER as $k => $v) {
             if (substr($k, 0, 4) == "HTTP" && empty($ignore[$k]) && isset($v)) {
@@ -209,7 +209,7 @@ class App_WidgetFactory_Banners extends App_WidgetFactory_WidgetAbstract {
         curl_setopt($request, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Connection: Close"));
         curl_setopt($request, CURLOPT_POSTFIELDS, $post);
         list($usecStart, $secStart) = explode(" ", microtime());
-        $contents = curl_exec( $request );
+        $contents = curl_exec($request);
         list($usecEnd, $secEnd) = explode(" ", microtime());
         curl_close($request);
 
@@ -225,7 +225,7 @@ class App_WidgetFactory_Banners extends App_WidgetFactory_WidgetAbstract {
                 . "&amp;z=" . ($sec + $usec)
                 . "&amp;a=" . ($analyticsMode ? $config["ANALYTICS_ID"] : "")
                 . "&amp;s=" . ($adMode ? $config["PUBLISHER_ID"] : "")
-                . "&amp;o=" . (empty( $_COOKIE["admobuu"] ) ? "" : $_COOKIE["admobuu"])
+                . "&amp;o=" . (empty($_COOKIE["admobuu"]) ? "" : $_COOKIE["admobuu"])
                 . "&amp;lt=" . ($secEnd + $usecEnd - $secStart - $usecStart)
                 . "&amp;to=" . $requestTimeout
                 . " alt=\"\" width=\"1\" height=\"1\" /></div>";

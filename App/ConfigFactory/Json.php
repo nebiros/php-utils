@@ -6,27 +6,27 @@
  * @author nebiros
  */
 class App_ConfigFactory_Json implements App_ConfigFactory_ConfigAdapterInterface {
-	/**
-	 *
-	 * @var array
-	 */
-	protected $_options = null;
+    /**
+     *
+     * @var array
+     */
+    protected $_options = null;
 
-	/**
-	 *
-	 * @param array $options
-	 */
-	public function __construct($options = null) {
-		$this->_options = $options;
-	}
+    /**
+     *
+     * @param array $options
+     */
+    public function __construct($options = null) {
+        $this->_options = $options;
+    }
 
-	/**
-	 *
-	 * @return array
-	 */
-	public function getOptions() {
-		return $this->_options;
-	}
+    /**
+     *
+     * @return array
+     */
+    public function getOptions() {
+        return $this->_options;
+    }
 
     /**
      *
@@ -35,9 +35,9 @@ class App_ConfigFactory_Json implements App_ConfigFactory_ConfigAdapterInterface
      * @throws Exception 
      */
     public function read($file = null) {
-	    	if (empty($file)) {
-	    		$file = $this->_options["file"];
-	    	}
+        if (empty($file)) {
+            $file = $this->_options["file"];
+        }
 
         $tmp = $file;
         $file = realpath($tmp);
