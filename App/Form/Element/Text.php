@@ -14,7 +14,7 @@ XHTML;
         $o = $this->_options;
 
         if (!empty($o)) {
-            $this->_xhtml .= $this->implodeOptionsForHtml();
+            $this->_xhtml .= App_Form::implodeOptionsForHtml($this->_options);
         }
 
         $this->_xhtml .= " />";

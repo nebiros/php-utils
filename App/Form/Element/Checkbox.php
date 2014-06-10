@@ -8,12 +8,16 @@ class App_Form_Element_Checkbox extends App_Form_Element_FormElementAbstract
         parent::__construct($name, $options);
 
         if (!empty($options["options"])) {
-            $this->_cacheOptions = $options["options"];
+            $this->_checkboxOptions = $options["options"];
         }
     }
 
     public function build() {
-        if (empty($this->_cacheOptions)) {
+        $this->_xhtml .= <<<XHTML
+            <div class="form-group">
+                <label>{$this->_options["element_label"]}</label>
+XHTML;
+        if (empty($this->_checkboxOptions)) {
             return $this;
         }
 
@@ -28,15 +32,7 @@ class App_Form_Element_Checkbox extends App_Form_Element_FormElementAbstract
 XHTML;
         }
 
-        
-
-        $o = $this->_options;
-
-        if (!empty($o)) {
-            $this->_xhtml .= $this->implodeOptionsForHtml();
-        }
-
-        $this->_xhtml .= " />";
+        $this->_xhtml .= "</div>";
 
         return $this;
     }

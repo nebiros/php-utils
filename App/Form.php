@@ -13,17 +13,34 @@ class App_Form
         self::ELEMENT_TYPE_CHECKBOX => "Checkbox", 
         self::ELEMENT_TYPE_RADIO => "Radio");
 
-    protected $_elements = array();
-    protected $_options = array();
+    protected $_elements = null;
+    protected $_options = null;
     protected $_xhtml = null;
+    protected $_defaultOptions = null;
+
+    public static function implodeOptionsForHtml(Array $options) {
+        return self::convertArrayOptionsToHtml(array_keys($options), array_values($options));
+    }
+
+    public static function convertArrayOptionsToHtml($keys, $values) {
+        $merge = array_map(array(self, "mergeHtmlOptions"), $keys, $values);
+
+        return implode(" ", $merge);
+    }
+
+    public static function mergeHtmlOptions($key, $value) {
+        return "{$key}=\"{$value}\"";
+    }
 
     public function __construct(Array $elements = null, Array $options = null) {
+        $this->_defaultOptions = array("action" => $_SERVER["PHP_SELF"], "method" => "post");
+
         if ($elements != null) {
-            $this->_elements = $elements;
+            $this->setElements($elements);
         }
         
         if ($options != null) {
-            $this->_options = $options;
+            $this->setOptions($options);
         }
     }
 
@@ -37,11 +54,15 @@ class App_Form
     }
 
     public function setOptions(Array $options) {
-        $this->_options = $options;
+        $this->_options = array_merge($this->_defaultOptions, $options);
         return $this;
     }
 
     public function getOptions() {
+        if (empty($this->_options)) {
+            $this->setOptions(array());
+        }
+
         return $this->_options;
     }
 
@@ -53,6 +74,12 @@ class App_Form
         if (empty($this->_elements)) {
             throw new InvalidArgumentException("Elements cannot be empty");
         }
+
+        $o = self::implodeOptionsForHtml($this->getOptions());
+
+        $this->_xhtml .= <<<XHTML
+            <form {$o}>
+XHTML;
 
         foreach ($this->_elements as $element) {
             $type = ucfirst(strtolower($element["element_type"]));            
@@ -71,10 +98,16 @@ class App_Form
             $this->_xhtml .= $el->draw();
         }
 
+        $this->_xhtml .= "</form>";
+
         return $this;
     }
 
     public function draw() {
         return $this->build()->getXhtml();
+    }
+
+    public function __toString() {
+        return $this->draw();
     }
 }
