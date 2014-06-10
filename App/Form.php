@@ -33,7 +33,8 @@ class App_Form
     }
 
     public function __construct(Array $elements = null, Array $options = null) {
-        $this->_defaultOptions = array("action" => $_SERVER["PHP_SELF"], "method" => "post");
+        $this->_defaultOptions = array("draw_form_tag" => true, 
+            "tag" => array("action" => $_SERVER["PHP_SELF"], "method" => "post"));
 
         if ($elements != null) {
             $this->setElements($elements);
@@ -75,11 +76,12 @@ class App_Form
             throw new InvalidArgumentException("Elements cannot be empty");
         }
 
-        $o = self::implodeOptionsForHtml($this->getOptions());
-
-        $this->_xhtml .= <<<XHTML
-            <form {$o}>
+        if (!empty($this->_options["draw_form_tag"])) {
+            $o = self::implodeOptionsForHtml($this->getOptions());
+            $this->_xhtml .= <<<XHTML
+                <form {$o}>
 XHTML;
+        }
 
         foreach ($this->_elements as $element) {
             $type = ucfirst(strtolower($element["element_type"]));            
@@ -98,7 +100,9 @@ XHTML;
             $this->_xhtml .= $el->draw();
         }
 
-        $this->_xhtml .= "</form>";
+        if (!empty($this->_options["draw_form_tag"])) {
+            $this->_xhtml .= "</form>";
+        }
 
         return $this;
     }
