@@ -76,8 +76,10 @@ class App_Form
             throw new InvalidArgumentException("Elements cannot be empty");
         }
 
-        if (!empty($this->_options["draw_form_tag"])) {
-            $o = self::implodeOptionsForHtml($this->getOptions());
+        $opt = $this->getOptions();
+
+        if (!empty($opt["draw_form_tag"])) {
+            $o = self::implodeOptionsForHtml($opt["tag"]);
             $this->_xhtml .= <<<XHTML
                 <form {$o}>
 XHTML;
