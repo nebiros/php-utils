@@ -17,6 +17,8 @@ class App_Form
     protected $_options = null;
     protected $_xhtml = null;
     protected $_defaultOptions = null;
+    protected $_messages = null;
+    protected $_values = null;
 
     public static function implodeOptionsForHtml(Array $options) {
         return self::convertArrayOptionsToHtml(array_keys($options), array_values($options));
@@ -86,19 +88,7 @@ XHTML;
         }
 
         foreach ($this->_elements as $element) {
-            $type = ucfirst(strtolower($element["element_type"]));            
-            $klass = "App_Form_Element_" . $type;
-
-            if (!class_exists($klass)) {
-                throw new InvalidArgumentException("Form element type '{$type}' not found");
-            }
-
-            $name = $element["element_name"];
-
-            unset($element["element_type"], $element["element_name"]);
-            $options = $element;
-
-            $el = new $klass($name, $options);
+            $el = $this->buildClass($element);
             $this->_xhtml .= $el->draw();
         }
 
@@ -115,5 +105,47 @@ XHTML;
 
     public function __toString() {
         return $this->draw();
+    }
+
+    protected function buildClass($element){
+        $type = ucfirst(strtolower($element["element_type"]));            
+        $klass = "App_Form_Element_" . $type;
+
+        if (!class_exists($klass)) {
+            throw new InvalidArgumentException("Form element type '{$type}' not found");
+        }
+
+        $name = $element["element_name"];
+
+        unset($element["element_type"], $element["element_name"]);
+        $options = $element;
+
+        $el = new $klass($name, $options);
+
+        return $el;
+    }
+
+    public function isValid($data) {
+        $this->_messages = array();
+        $this->_values = array();
+        foreach ($this->_elements as $element) {
+            $el = $this->buildClass($element);
+            if(!$el->isValid($data))
+            {
+               array_push($this->_messages, $el->getError());
+            }
+            $elArray = $el->getValue();
+            $elKeys = key($elArray);
+            $this->_values[$elKeys] = $elArray[$elKeys];
+        }
+        return count($this->_messages) == 0;
+    }
+
+    public function getErrors() {
+        return $this->_messages;
+    }
+
+    public function getValues() {
+        return $this->_values;
     }
 }

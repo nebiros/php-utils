@@ -5,6 +5,8 @@ abstract class App_Form_Element_FormElementAbstract implements App_Form_Element_
     protected $_name = null;
     protected $_options = null;
     protected $_xhtml = null;
+    protected $_message = null;
+    protected $_value = null;
 
     public function __construct($name, Array $options = null) {
         $this->_name = $name;
@@ -37,4 +39,17 @@ abstract class App_Form_Element_FormElementAbstract implements App_Form_Element_
     public function __toString() {
         return $this->draw();
     }
+
+    public function getError() {
+        return $this->_message;
+    }
+
+    public function isValid(Array $data) {
+        throw new LogicException(__METHOD__ . " method not implemented");
+    }
+
+    public function getValue() {
+        return $this->_value;
+    }
+
 }
