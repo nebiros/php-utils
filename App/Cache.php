@@ -52,7 +52,7 @@ class App_Cache {
      */
     public function save($key, $data = null, $ttl = 3600) {
         if (true === empty($key)) {
-            throw new Exception("invalid key");
+            throw new InvalidArgumentException("Invalid key");
         }
 
         $dataPath = $this->_buildPath($key);
@@ -150,7 +150,7 @@ class App_Cache {
      */
     public function exist($key) {
         if (true === empty($key)) {
-            throw new Exception("invalid key");
+            throw new InvalidArgumentException("Invalid key");
         }
 
         $path = $this->_buildPath($key);
@@ -165,7 +165,7 @@ class App_Cache {
      */
     public function delete($key) {
         if (true === empty($key)) {
-            throw new Exception("invalid key");
+            throw new InvalidArgumentException("Invalid key");
         }
 
         $dataPath = $this->_buildPath($key);

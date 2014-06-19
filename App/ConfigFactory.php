@@ -87,7 +87,7 @@ class App_ConfigFactory {
      */
     public static function cache($class, Array $adapterOptions = array(), Array $cacheOptions = array()) {
         if (empty($class)) {
-            throw new Exception("Configuration class type must be set");
+            throw new InvalidArgumentException("Configuration class type must be set");
         }
 
         self::getInstance();
@@ -153,7 +153,7 @@ class App_ConfigFactory {
      */
     protected static function _cache(Array $cacheOptions = array()) {
         if (null === self::$_adapter) {
-            throw new Exception("Configuration adapter was not initialized");
+            throw new InvalidArgumentException("Configuration adapter was not initialized");
         }
 
         if (empty($cacheOptions["ttl"])) {

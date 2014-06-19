@@ -23,7 +23,7 @@ class App_WidgetFactory {
         $klass = "App_WidgetFactory_" . ucfirst($class);
 
         if (!class_exists($klass)) {
-            throw new Exception("Widget class '{$class}' not found");
+            throw new InvalidArgumentException("Widget class '{$class}' not found");
         }
 
         $widget = new $klass($options);

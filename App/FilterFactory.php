@@ -15,7 +15,7 @@ class App_FilterFactory {
         $klass = "App_Filter_Input_" . ucfirst($class);
 
         if (!class_exists($klass)) {
-            throw new Exception("filter input class '{$class}' not found");
+            throw new InvalidArgumentException("filter input class '{$class}' not found");
         }
 
         $input = new $klass($options["data"], $options["options"]);
