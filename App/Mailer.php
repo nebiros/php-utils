@@ -5,7 +5,7 @@
  * 
  * @author nebiros
  */
-class Mailer { 
+class App_Mailer { 
     protected $_mailsFilePath = null; 
   
     protected $_from = null; 
