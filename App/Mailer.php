@@ -5,7 +5,8 @@
  * 
  * @author nebiros
  */
-class App_Mailer { 
+class App_Mailer 
+{ 
     protected $_mailsFilePath = null; 
   
     protected $_from = null; 
@@ -198,7 +199,7 @@ Content-Disposition: attachment; file="<?php echo basename($this->_attachment) ?
 ?> 
 <?php echo $attachmentEncoded . "\n" ?> 
 --mixed-<?php echo $boundaryHash ?>-- 
-<? 
+<?php 
         } 
           
         // Now set the mail message with all headers needed :). 
