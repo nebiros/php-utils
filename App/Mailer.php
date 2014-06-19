@@ -39,14 +39,14 @@ class Mailer {
         $this->_reply = $options["reply"];
         $this->_subject = $options["subject"];           
         if (true === empty($this->_subject)) { 
-            throw new Exception("mail subject argument can't be empty"); 
+            throw new InvalidArgumentException("Mail subject argument can't be empty"); 
         }
 
         $this->_isXhtml = (bool) $options["html"]; 
         $this->_attachment = $options["attach"]; 
   
         if (false === empty($this->_attachment) && false === is_file($this->_attachment)) { 
-            throw new Exception("Attachment must be real file"); 
+            throw new InvalidArgumentException("Attachment must be real file"); 
         }
 
         if ((bool) $this->_isCli) {
