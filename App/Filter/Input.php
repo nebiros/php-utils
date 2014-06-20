@@ -4,7 +4,7 @@
  *
  * @author nebiros
  */
-class App_FilterFactory_Input {
+abstract class App_Filter_Input {
     const APPEND = "append";
     const PREPEND = "prepend";
     const SEPARATOR = ", ";
@@ -29,12 +29,6 @@ class App_FilterFactory_Input {
     
     /**
      *
-     * @var Helper_Translate 
-     */
-    protected $_translate = null;
-    
-    /**
-     *
      * @param array $data
      * @param array $options 
      */
@@ -44,8 +38,6 @@ class App_FilterFactory_Input {
         if (null !== $options) {
             $this->_options = $options;
         }
-        
-        $this->_translate = Yasc_App::viewHelper("translate");
     }
     
     /**
