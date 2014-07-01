@@ -44,7 +44,7 @@ class App_ConfigFactory_Php implements App_ConfigFactory_ConfigAdapterInterface 
         $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 
         if (!is_file($file)) {
-            throw new Exception("File '{$tmp}' not found");
+            throw new InvalidArgumentException("File '{$tmp}' not found");
         }
 
         if ($ext != "php") {

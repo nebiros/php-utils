@@ -6,7 +6,8 @@
  *
  * @author nebiros
  */
-class App_Cache {
+class App_CacheFactory_File extends App_CacheFactory_CacheAdapterAbstract 
+{
     /**
      *
      * @var string
@@ -15,16 +16,12 @@ class App_Cache {
 
     /**
      *
-     * @var string
-     */
-    protected $_key = null;
-
-    /**
-     *
      * @param string $dir
      */
-    public function __construct($dir = null) {
-        $this->setDir($dir);
+    public function __construct(Array $options = null) {
+        parent::__construct($options);
+        
+        $this->setDir($this->_options["dir"]);
     }
 
     /**
@@ -78,14 +75,18 @@ class App_Cache {
 
         $fh = @fopen($path, "ab+");
 
-        if (@flock($fh, LOCK_EX)) {             
-            fseek($fh, 0);
-            ftruncate($fh, 0);
-            $tmp = @fwrite($fh, serialize($data));
-            if (false !== $tmp) {
-                $status = true;
-            }
-            @flock($fh, LOCK_UN);            
+        // if (@flock($fh, LOCK_EX)) {             
+        //     fseek($fh, 0);
+        //     ftruncate($fh, 0);
+        //     $tmp = @fwrite($fh, serialize($data));
+        //     if (false !== $tmp) {
+        //         $status = true;
+        //     }
+        //     @flock($fh, LOCK_UN);            
+        // }
+        $tmp = @fwrite($fh, serialize($data));
+        if (false !== $tmp) {
+            $status = true;
         }
 
         @fclose($fh);
@@ -100,7 +101,7 @@ class App_Cache {
      */
     public function load($key){
         if (true === empty($key)) {
-            throw new Exception("invalid key");
+            throw new InvalidArgumentException("Invalid key");
         }
 
         $dataPath = $this->_buildPath($key);
@@ -134,10 +135,11 @@ class App_Cache {
 
         $fh = @fopen($path, "rb");
 
-        if (@flock($fh, LOCK_SH)) {
-            $data = stream_get_contents($fh);
-        }
+        // if (@flock($fh, LOCK_SH)) {
+        //     $data = stream_get_contents($fh);
+        // }
 
+        $data = stream_get_contents($fh);
         @fclose($fh);
 
         return @unserialize($data);
@@ -177,29 +179,6 @@ class App_Cache {
         }
 
         return true;
-    }
-
-    /**
-     *
-     * @param string $key
-     * @param bool $lowercase
-     * @param string $glue
-     * @return void
-     */
-    protected function _buildKey($key, $lowercase = true, $glue = "-") {
-        if (true === $lowercase) {
-            $key = strtolower($key);
-        }
-
-        $this->_key = preg_replace("/[^a-zA-Z0-9_-]/", "", preg_replace("/\s+/", $glue, $key));
-    }
-
-    /**
-     *
-     * @return string
-     */
-    public function getKey() {
-        return $this->_key;
     }
 
     /**

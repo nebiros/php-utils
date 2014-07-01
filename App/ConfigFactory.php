@@ -16,43 +16,25 @@ class App_ConfigFactory {
      *
      * @var App_ConfigFactory
      */
-    protected static $_instance = null;   
-    
+    protected static $_instance = null;
+
     /**
      *
-     * @var App_Cache
+     * @var App_ConfigFactory_ConfigAdapterInterface 
      */
-    protected static $_cache = null;
-    
+    protected static $_configAdapter = null;
+
     /**
      *
-     * @var string
+     * @var array
      */
-    protected static $_cacheKey = null;    
+    protected static $_configAdapterOptions = null;
     
     /**
      *
      * @var array
      */
     protected static $_data = null;
-
-    /**
-     *
-     * @var App_ConfigFactory_ConfigAdapterInterface 
-     */
-    protected static $_adapter = null;
-
-    /**
-     *
-     * @var array
-     */
-    protected static $_adapterOptions = array();
-
-    /**
-     *
-     * @var array
-     */
-    protected static $_cacheOptions = array();
     
     /**
      *
@@ -61,7 +43,6 @@ class App_ConfigFactory {
     public static function getInstance() {
         if (null === self::$_instance) {
             self::$_instance = new self();
-            self::$_instance->_initialize();
         }
 
         return self::$_instance;
@@ -69,73 +50,42 @@ class App_ConfigFactory {
 
     protected function __construct() {}
     protected function __clone() {}
-    
-    /**
-     * 
-     * @return void
-     */
-    protected function _initialize() {
-        self::$_instance->setCache();
-    }
 
     /**
      *
-     * @param string $class
+     * @param string $klass
      * @param array $adapterOptions
-     * @param array $cacheOptions
      * @return App_ConfigFactory
      */
-    public static function cache($class, Array $adapterOptions = array(), Array $cacheOptions = array()) {
-        if (empty($class)) {
+    public static function config($klass, Array $adapterOptions = null) {
+        if (empty($klass)) {
             throw new InvalidArgumentException("Configuration class type must be set");
+        }
+
+        if (empty($adapterOptions["file"])) {
+            throw new InvalidArgumentException("Configuration file path must be set");
         }
 
         self::getInstance();
 
-        $class = "App_ConfigFactory_" . ucfirst($class);
+        $klass = "App_ConfigFactory_" . ucfirst(strtolower($klass));
 
-        if (false === class_exists($class)) {
-            throw new Exception("Configuration class '{$class}' was not found");
+        if (false === class_exists($klass)) {
+            throw new Exception("Configuration class '{$klass}' was not found");
         }
 
-        $adapter = new $class($adapterOptions);
+        $adapter = new $klass($adapterOptions);
 
         if (false === ($adapter instanceof App_ConfigFactory_ConfigAdapterInterface)) { 
-            throw new Exception("Configuration class '{$class}' does not implement App_ConfigFactory_ConfigAdapterInterface");
+            throw new Exception("Configuration class '{$klass}' does not implement App_ConfigFactory_ConfigAdapterInterface");
         }
 
-        self::$_adapter = $adapter;
-        self::$_adapterOptions = $adapterOptions;
-        self::$_cacheOptions = $cacheOptions;
+        self::$_configAdapter = $adapter;
+        self::$_configAdapterOptions = $adapterOptions;
 
-        self::_cache($cacheOptions);
+        self::_read();
 
         return self::$_instance;
-    }
-    
-    /**
-     *
-     * @return App_ConfigFactory
-     */
-    public static function setCache() {
-        self::$_cache = new App_Cache();
-        return self::$_instance;
-    }
-    
-    /**
-     *
-     * @return App_Cache 
-     */
-    public static function getCache() {
-        return self::$_cache;
-    }
-    
-    /**
-     *
-     * @return array
-     */
-    public static function getConfig() {
-        return self::_cache(self::$_cacheOptions);
     }
 
     /**
@@ -143,34 +93,36 @@ class App_ConfigFactory {
      * @return App_ConfigFactory_ConfigAdapterInterface
      */
     public static function getAdapter() {
-        return self::$_adapter;
+        return self::$_configAdapter;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public static function getAdapterOptions() {
+        return self::$_configAdapterOptions;
     }
     
     /**
      *
-     * @param array $cacheOptions
-     * @return array 
+     * @return array
      */
-    protected static function _cache(Array $cacheOptions = array()) {
-        if (null === self::$_adapter) {
-            throw new InvalidArgumentException("Configuration adapter was not initialized");
+    public static function getData() {
+        return self::$_data;
+    }
+    
+    /**
+     *
+     * @return void
+     */
+    protected static function _read() {
+        if (null === self::$_configAdapter) {
+            throw new Exception("Configuration adapter was not initialized");
         }
 
-        if (empty($cacheOptions["ttl"])) {
-            $cacheOptions["ttl"] = 604800;
+        if (empty(self::$_data)) {
+            self::$_data = self::$_configAdapter->read();
         }
-
-        if (!empty($cacheOptions["dir"])) {
-            self::$_cache->setDir($cacheOptions["dir"]);
-        }
-
-        self::$_cacheKey = "config_" . APPLICATION_ENV;
-
-        if (false === ($data = self::$_cache->load(self::$_cacheKey))) {
-            $data = self::$_adapter->read($file);
-            self::$_cache->save(self::$_cacheKey, $data, $cacheOptions["ttl"]); // 1 week.
-        }
-        
-        return $data;
     }
 }
