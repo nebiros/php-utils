@@ -9,14 +9,12 @@ class App_Form_Element_Text extends App_Form_Element_FormElementAbstract
     public function build() {
 
         $value = "";
-        if(is_string($this->_options["value"]))
-        {
+        if (is_string($this->_options["value"])) {
             $value = $this->_options["value"];
         }
         
         $type = "text";
-        if(is_string($this->_options["type"]))
-        {
+        if (is_string($this->_options["type"])) {
             $type = $this->_options["type"];
         }
 
