@@ -7,25 +7,30 @@ class App_Form_Element_Select extends App_Form_Element_FormElementAbstract
     }
 
     public function build() {
+        $value = "";
+        if (is_string($this->_options["value"])) {
+            $value = $this->_options["value"];
+        }
+
         $this->_xhtml = <<<XHTML
-            <div id="div_{$this->_name}" class="form-group">
-            <label>{$this->_options["element_label"]}</label>
-            <br/>
-            <select class="form-control" name="{$this->_name}">
-                <option>––</option>
+            <div class="form-group clearfix">
+            <label class="control-label">{$this->_options["element_label"]}</label>
+            <select class="form-control html-select clearfix" name="{$this->_name}" value="{$value}">
+                <option>--</option>
 XHTML;
 
         $o = $this->_options['options'];
 
         foreach ($o as $option) {
+            $selected = $option["element_option_id"] == $value ? "selected" : "";
             $this->_xhtml .= <<<XHTML
-                    <option value="{$option["element_option_id"]}">
+                    <option value="{$option["element_option_id"]}" {$selected} >
                         {$option["element_option_label"]}
                     </option>
 XHTML;
         }
 
-        $this->_xhtml .= " </select></div>";
+        $this->_xhtml .= " </select><span class='caret'></span></div>";
 
         return $this;
     }
