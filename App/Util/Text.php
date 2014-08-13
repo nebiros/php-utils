@@ -92,5 +92,18 @@ class App_Util_Text {
         
         return $text;
     }
+
+    /**
+     * Extremely simple function to get human filesize.
+     * @param int $bytes
+     * @param integer $decimals
+     * @return string
+     * @see http://php.net/manual/en/function.filesize.php#106569
+     */
+    public static function humanFilesize($bytes, $decimals = 2) {
+        $sz = "BKMGTP";
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+    }
 }
 
