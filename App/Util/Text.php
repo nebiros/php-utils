@@ -94,16 +94,17 @@ class App_Util_Text {
     }
 
     /**
-     * Extremely simple function to get human filesize.
+     * Human Readable File Size with PHP.
+     * 
      * @param int $bytes
      * @param integer $decimals
      * @return string
-     * @see http://php.net/manual/en/function.filesize.php#106569
+     * @see http://jeffreysambells.com/2012/10/25/human-readable-filesize-php
      */
     public static function humanFilesize($bytes, $decimals = 2) {
-        $sz = "BKMGTP";
+        $size = array("B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
         $factor = floor((strlen($bytes) - 1) / 3);
-        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
     }
 }
 
