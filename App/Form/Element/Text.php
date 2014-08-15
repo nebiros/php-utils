@@ -18,11 +18,15 @@ class App_Form_Element_Text extends App_Form_Element_FormElementAbstract
             $type = $this->_options["type"];
         }
 
+        $id = "";
+        if (is_string($this->_options["id"])) {
+            $id = "id='" . $this->_options["id"] . "'";
+        }
 
         $this->_xhtml = <<<XHTML
             <div class="form-group">
                     <label class="control-label">{$this->_options[element_label]}</label>
-                    <input name="{$this->_name}" type="{$type}" class="form-control" value="{$value}" />
+                    <input name="{$this->_name}" {$id} type="{$type}" class="form-control" value="{$value}" />
             </div>
 XHTML;
 
