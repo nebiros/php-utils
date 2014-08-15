@@ -43,7 +43,7 @@ class App_Mailer
             throw new InvalidArgumentException("Mail subject argument can't be empty"); 
         }
 
-        $this->_isXhtml = (bool) $options["html"]; 
+        $this->_isXhtml = (bool) $options["is_html"]; 
         $this->_attachment = $options["attach"]; 
   
         if (false === empty($this->_attachment) && false === is_file($this->_attachment)) { 
@@ -152,7 +152,10 @@ class App_Mailer
             $mailHeaders .= "Content-Type: multipart/mixed; boundary=\"mixed-{$boundaryHash}\""; 
         } else { 
             $mailHeaders .= "Content-Type: multipart/alternative; boundary=\"alt-{$boundaryHash}\""; 
-        } 
+        }
+
+        $mailHeaders .= "X-Sender-IP: {$_SERVER[SERVER_ADDR]}\r\n";
+        $mailHeaders .= "Date: " . date("n/d/Y g:i A") . "\r\n";
   
         $this->_setMessageWithHeaders($boundaryHash); 
         return $mailHeaders; 

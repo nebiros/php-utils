@@ -92,5 +92,19 @@ class App_Util_Text {
         
         return $text;
     }
+
+    /**
+     * Human Readable File Size with PHP.
+     * 
+     * @param int $bytes
+     * @param integer $decimals
+     * @return string
+     * @see http://jeffreysambells.com/2012/10/25/human-readable-filesize-php
+     */
+    public static function humanFilesize($bytes, $decimals = 2) {
+        $size = array("B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$size[$factor];
+    }
 }
 
