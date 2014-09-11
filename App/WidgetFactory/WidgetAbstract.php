@@ -27,12 +27,14 @@ abstract class App_WidgetFactory_WidgetAbstract implements App_WidgetFactory_Wid
      *
      * @param array $options 
      */
-    public function  __construct(Array $options = null) {
-        if (null !== $options) {
-            $this->setOptions($options);
+    public function  __construct(Array $options) {
+        if (!isset($options["cache"]) || empty($options["cache"])) {
+            throw new InvalidArgumentException("Cache object must be set");            
         }
 
-        $this->_cache = new App_Cache(APPLICATION_PATH . "/../tmp");
+        $this->setOptions($options);
+
+        $this->_cache = $options["cache"];
         $this->_config = $this->getConfig();
     }
     

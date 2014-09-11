@@ -9,7 +9,7 @@ class App_WidgetFactory_RemoteUrl extends App_WidgetFactory_WidgetAbstract {
      *
      * @param array $options 
      */
-    public function  __construct(Array $options = array()) {
+    public function  __construct(Array $options) {
         parent::__construct($options);
     }
     

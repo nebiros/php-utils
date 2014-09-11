@@ -7,7 +7,7 @@
 class App_WidgetFactory_GoogleAnalytics extends App_WidgetFactory_WidgetAbstract {
     const GA_PIXEL = "/ga.php";
     
-    public function  __construct($options = array()) {
+    public function  __construct(Array $options) {
         parent::__construct($options);
     }
     

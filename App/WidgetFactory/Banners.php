@@ -5,7 +5,7 @@
  * @author nebiros
  */
 class App_WidgetFactory_Banners extends App_WidgetFactory_WidgetAbstract {
-    public function  __construct($options = null) {
+    public function  __construct(Array $options) {
         parent::__construct($options);
     }
     
