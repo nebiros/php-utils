@@ -20,13 +20,17 @@ class App_WidgetFactory {
      * @return App_WidgetFactory_WidgetAbstract|App_WidgetFactory_WidgetInterface
      */
     public static function factory($class, Array $options = array()) {
-        $klass = "App_WidgetFactory_" . ucfirst($class);
+        $klass = ucfirst($class);
 
         if (!class_exists($klass)) {
             throw new InvalidArgumentException("Widget class '{$class}' not found");
         }
 
         $widget = new $klass($options);
+        if (!$widget instanceof App_WidgetFactory_WidgetInterface) {
+            throw new Exception("Widget class '{$class}' does not implements App_WidgetFactory_WidgetInterface");
+        }
+
         return $widget;
     }    
 }
