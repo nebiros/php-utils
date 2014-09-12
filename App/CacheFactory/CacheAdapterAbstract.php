@@ -84,4 +84,8 @@ class App_CacheFactory_CacheAdapterAbstract implements App_CacheFactory_CacheAda
 
         $this->_key = preg_replace("/[^a-zA-Z0-9_-]/", "", preg_replace("/\s+/", $glue, $key));
     }
+
+    public function flush() {
+        throw new LogicException(__METHOD__ . " method not implemented");
+    }
 }

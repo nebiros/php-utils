@@ -70,4 +70,8 @@ class App_CacheFactory_Memcache extends App_CacheFactory_CacheAdapterAbstract
         $this->_buildKey($key);
         $this->_memcache->delete($this->_key);
     }
+
+    public function flush() {
+        $this->_memcache->flush();
+    }
 }

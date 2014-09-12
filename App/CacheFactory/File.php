@@ -190,4 +190,8 @@ class App_CacheFactory_File extends App_CacheFactory_CacheAdapterAbstract
         $this->_buildKey($key);
         return $this->_dir . "/" . $this->_key;
     }
+
+    public function flush() {
+        array_map('unlink', $this->_dir . "/*");
+    }
 }
