@@ -40,6 +40,20 @@ class App_CacheFactory_File extends App_CacheFactory_CacheAdapterAbstract
         return $this;
     }
 
+    public function getDir() {
+        $d = $this->_dir;
+
+        if (empty($d)) {
+            throw new InvalidArgumentException("Dir seems empty");
+        }
+
+        if (!is_dir($d)) {
+            throw new InvalidArgumentException("Dir '{$d}' seems not a directory");
+        }
+
+        return $d;
+    }
+
     /**
      *
      * @param string $key
@@ -84,6 +98,8 @@ class App_CacheFactory_File extends App_CacheFactory_CacheAdapterAbstract
         //     }
         //     @flock($fh, LOCK_UN);            
         // }
+        fseek($fh, 0);
+        ftruncate($fh, 0);
         $tmp = @fwrite($fh, serialize($data));
         if (false !== $tmp) {
             $status = true;
@@ -138,7 +154,6 @@ class App_CacheFactory_File extends App_CacheFactory_CacheAdapterAbstract
         // if (@flock($fh, LOCK_SH)) {
         //     $data = stream_get_contents($fh);
         // }
-
         $data = stream_get_contents($fh);
         @fclose($fh);
 
@@ -188,6 +203,10 @@ class App_CacheFactory_File extends App_CacheFactory_CacheAdapterAbstract
      */
     protected function _buildPath($key) {
         $this->_buildKey($key);
-        return $this->_dir . "/" . $this->_key;
+        return $this->getDir() . "/" . $this->getKey();
+    }
+
+    public function flush() {
+        array_map("unlink", $this->getDir() . "/*");
     }
 }
