@@ -209,4 +209,8 @@ class App_CacheFactory_File extends App_CacheFactory_CacheAdapterAbstract
     public function flush() {
         array_map("unlink", $this->getDir() . "/*");
     }
+
+    public function flush() {
+        array_map('unlink', $this->_dir . "/*");
+    }
 }

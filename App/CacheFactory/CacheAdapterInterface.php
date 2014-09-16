@@ -11,4 +11,5 @@ interface App_CacheFactory_CacheAdapterInterface
     public function load($key);
     public function exist($key);
     public function delete($key);
+    public function flush();
 }
