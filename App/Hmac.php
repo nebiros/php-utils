@@ -11,7 +11,6 @@
  * PHP validation:
  * <code>
  * <?php
- * 
  * $hmacAuth = new App_Hmac(dirname(__FILE__) . "/../../data/api_keys", $_GET);
  *
  * if (!$hmacAuth->isValid()) {
@@ -23,25 +22,30 @@
  * <code>
  * NSString *authKey = @"my_auth_key";
  * NSString *authSecret = @"my_auth_secret";
- * NSString *params = [NSString URLQueryWithParameters:@{@"auth_version": @1.0, @"auth_key": authKey, @"auth_timestamp": [NSString stringWithFormat:@"%0.0f", ([NSDate date]).timeIntervalSince1970]}];
- * 
+ * NSMutableDictionary *params = [@{@"auth_version": @1.0,
+ *     @"auth_key": authKey,
+ *     @"auth_timestamp": [NSString stringWithFormat:@"%0.0f", ([NSDate date]).timeIntervalSince1970]} mutableCopy];
+ * NSString *queryString = [NSString URLQueryWithParameters:params];
+ *
  * const char *cAuthSecret = [authSecret cStringUsingEncoding:NSASCIIStringEncoding];
- * const char *cParams = [params cStringUsingEncoding:NSASCIIStringEncoding];
- * 
- * unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
- * CCHmac(kCCHmacAlgSHA256, cAuthSecret, strlen(cAuthSecret), cParams, strlen(cParams), cHMAC);
- * 
+ * const char *cQueryString = [queryString cStringUsingEncoding:NSASCIIStringEncoding];
+ *
+ * unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+ * CCHmac(kCCHmacAlgSHA1, cAuthSecret, strlen(cAuthSecret), cQueryString, strlen(cQueryString), cHMAC);
+ *
  * NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
- * NSString *hash = [HMAC base64EncodedStringWithOptions:0];
- * 
- * NSString *urlAsString = [NSString stringWithFormat:@"http://example.com/api/v1/get_vertical_menu?%@&auth_signature=%@", params, hash];
+ * NSString *hash = [HMAC base64EncodedStringWithOptions:(NSDataBase64EncodingOptions) 0];
+ *
+ * [params setObject:hash forKey:@"auth_signature"];
+ * queryString = [NSString URLQueryWithParameters:params];
+ * NSString *urlAsString = [NSString stringWithFormat:@"http://10.1.1.41:10600/api/v1/get_vertical_menu?%@", queryString];
  * NSURL *url = [NSURL URLWithString:urlAsString];
- * 
+ *
  * NSURLRequest *req = [NSURLRequest requestWithURL:url];
  * NSURLResponse *resp;
  * NSError *error;
  * NSData *data = [NSURLConnection sendSynchronousRequest:req returningResponse:&resp error:&error];
- * 
+ *
  * if (error) {
  *     NSString *errorMessage = [NSString stringWithFormat:@"\n%@\n%@", [error localizedDescription], error.userInfo];
  *     NSLog(@"[ERROR] - %s: %@",
@@ -49,7 +53,7 @@
  *         errorMessage);
  *         return 1;
  * }
- * 
+ *
  * NSLog(@"resp: %@", resp);
  * </code>
  */
@@ -60,7 +64,7 @@ class App_Hmac
     protected $_message = null;
 
     protected $_authOptions = array(
-        "algo" => "sha256",
+        "algo" => "sha1",
         "auth_version_param_name" => "auth_version",
         "auth_key_param_name" => "auth_key",
         "auth_timestamp_param_name" => "auth_timestamp",
@@ -86,7 +90,7 @@ class App_Hmac
         $tmp = realpath($hmacFile);
 
         if (empty($tmp) || !is_readable($tmp)) {
-            header("HTTP/1.1 403 Forbidden", true, 403);
+            header("HTTP/1.1 400 Bad Request", true, 400);
             throw new InvalidArgumentException("HMAC file not readable, '{$hmacFile}'");
         }
 
@@ -106,7 +110,7 @@ class App_Hmac
      */
     public function setMessage($message) {
         if (empty($message)) {
-            header("HTTP/1.1 403 Forbidden", true, 403);
+            header("HTTP/1.1 400 Bad Request", true, 400);
             throw new InvalidArgumentException("HMAC message is required");
         }
 
@@ -117,7 +121,7 @@ class App_Hmac
 
             if (empty($tmp)) {
                 if (false === ($tmp = base64_decode($message))) {
-                    header("HTTP/1.1 403 Forbidden", true, 403);
+                    header("HTTP/1.1 400 Bad Request", true, 400);
                     throw new InvalidArgumentException("Cannot parse HMAC message");
                 }
             }
@@ -175,7 +179,7 @@ class App_Hmac
         $this->_validateTimestamp($timestampGrace);
 
         if (!($authSecret = $this->_getAuthSecret($message[$this->_authOptions["auth_key_param_name"]]))) {
-            header("HTTP/1.1 403 Forbidden", true, 403);
+            header("HTTP/1.1 400 Bad Request", true, 400);
             throw new Exception("Auth secret not found");
         }
 
@@ -189,13 +193,13 @@ class App_Hmac
      */
     protected function _getAuthSecret($authKey) {
         if (empty($authKey)) {
-            header("HTTP/1.1 403 Forbidden", true, 403);
+            header("HTTP/1.1 400 Bad Request", true, 400);
             throw new InvalidArgumentException("Auth key is required");
         }
 
         $fp = @fopen($this->_hmacFile, "r");
         if (!$fp) {
-            header("HTTP/1.1 403 Forbidden", true, 403);
+            header("HTTP/1.1 400 Bad Request", true, 400);
             throw new Exception("Unable to open password file: {$this->_hmacFile}");
         }
 
@@ -212,7 +216,7 @@ class App_Hmac
 
     protected function _validateVersion() {
         if ((int) $this->_message[$this->_authOptions["auth_version_param_name"]] !== $this->_authOptions[$this->_authOptions["auth_version_param_name"]]) {
-            header("HTTP/1.1 403 Forbidden", true, 403);
+            header("HTTP/1.1 400 Bad Request", true, 400);
             throw new Exception("Auth version is incorrect");
         }
 
@@ -226,7 +230,7 @@ class App_Hmac
 
         $difference = time() - (int) $this->_message[$this->_authOptions["auth_timestamp_param_name"]];
         if ($difference >= $timestampGrace) {
-            header("HTTP/1.1 403 Forbidden", true, 403);
+            header("HTTP/1.1 400 Bad Request", true, 400);
             throw new Exception("Auth timestamp is invalid");
         }
 
@@ -241,18 +245,19 @@ class App_Hmac
      */
     protected function _resolve($authSecret, Array $message) {
         if (empty($authSecret)) {
-            header("HTTP/1.1 403 Forbidden", true, 403);
+            header("HTTP/1.1 400 Bad Request", true, 400);
             throw new InvalidArgumentException("Auth secret is required");
         }
 
         if (!isset($message[$this->_authOptions["auth_signature_param_name"]])) {
-            header("HTTP/1.1 403 Forbidden", true, 403);
+            header("HTTP/1.1 400 Bad Request", true, 400);
             throw new InvalidArgumentException("Signature key is required");
         }
 
         $params = $message;
-        unset($params[$this->_authOptions["auth_signature_param_name"]]);        
-        $params = http_build_query($message);
+        unset($params[$this->_authOptions["auth_signature_param_name"]]);
+        ksort($params);
+        $params = http_build_query($params);
 
         $hash = hash_hmac($this->_authOptions["algo"], $params, $authSecret, true);
         $base64Hash = base64_encode($hash);
