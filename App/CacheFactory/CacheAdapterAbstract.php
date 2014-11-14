@@ -6,7 +6,7 @@
  */
 class App_CacheFactory_CacheAdapterAbstract implements App_CacheFactory_CacheAdapterInterface 
 {
-/**
+    /**
      *
      * @var string
      */
@@ -80,6 +80,10 @@ class App_CacheFactory_CacheAdapterAbstract implements App_CacheFactory_CacheAda
     protected function _buildKey($key, $lowercase = true, $glue = "-") {
         if (true === $lowercase) {
             $key = strtolower($key);
+        }
+
+        if (strlen($key) > 150) {
+            $key = substr($key, 0, 150);
         }
 
         $this->_key = preg_replace("/[^a-zA-Z0-9_-]/", "", preg_replace("/\s+/", $glue, $key));

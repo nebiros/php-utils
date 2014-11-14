@@ -98,6 +98,10 @@ class App_CacheFactory_File extends App_CacheFactory_CacheAdapterAbstract
         //     }
         //     @flock($fh, LOCK_UN);            
         // }
+        if (false === $fh) {
+            return $status;
+        }
+        
         fseek($fh, 0);
         ftruncate($fh, 0);
         $tmp = @fwrite($fh, serialize($data));
