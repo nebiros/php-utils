@@ -81,9 +81,9 @@ class App_ConfigFactory_Json implements App_ConfigFactory_ConfigAdapterInterface
             throw new Exception("JSON Error: {$error}");
         }
 
-        $section = $this->_options["section"];
-        if (empty($section)) {
-            $section = APPLICATION_ENV;
+        $section = APPLICATION_ENV;
+        if (isset($this->_options["section"]) && !empty($this->_options["section"])) {
+            $section = $this->_options["section"];
         }
 
         $env = $php[$section];
