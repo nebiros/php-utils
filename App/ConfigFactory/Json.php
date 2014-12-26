@@ -81,10 +81,14 @@ class App_ConfigFactory_Json implements App_ConfigFactory_ConfigAdapterInterface
             throw new Exception("JSON Error: {$error}");
         }
 
-        $env = $json[APPLICATION_ENV];
+        $section = $this->_options["section"];
+        if (empty($section)) {
+            $section = APPLICATION_ENV;
+        }
 
+        $env = $php[$section];
         if (empty($env)) {
-            throw new Exception("Section '" . APPLICATION_ENV . "' not found in '{$tmp}'");
+            throw new Exception("Section '" . $section . "' not found in '{$tmp}'");
         }
         
         return $env;
