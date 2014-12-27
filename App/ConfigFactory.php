@@ -124,5 +124,9 @@ class App_ConfigFactory {
         if (empty(self::$_data)) {
             self::$_data = self::$_configAdapter->read();
         }
+
+        if (isset(self::$_configAdapterOptions["refresh_data"]) && true === self::$_configAdapterOptions["refresh_data"]) {
+            self::$_data = self::$_configAdapter->read();
+        }
     }
 }
