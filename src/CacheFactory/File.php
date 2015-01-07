@@ -215,6 +215,6 @@ class File extends CacheAdapterAbstract
     }
 
     public function flush() {
-        array_map("unlink", $this->getDir() . "/*");
+        array_map("unlink", glob($this->getDir() . "/*"));
     }
 }
