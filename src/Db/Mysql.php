@@ -115,7 +115,7 @@ class Mysql {
      * Set options.
      *
      * @param array $options
-     * @return App_Db_Mysql
+     * @return Nebiros\PhpUtils\Db\Mysql
      */
     public function setOptions(Array $options) {
         $this->_options = array_merge($this->_options, $options);
@@ -134,7 +134,7 @@ class Mysql {
     /**
      * Reset to default options.
      *
-     * @return App_Db_Mysql
+     * @return Nebiros\PhpUtils\Db\Mysql
      */
     public function clearOptions() {
         $this->_options = $this->_defaultOptions;
@@ -144,7 +144,7 @@ class Mysql {
     /**
      * Default options.
      *
-     * @return App_Db_Mysql
+     * @return Nebiros\PhpUtils\Db\Mysql
      */
     public function setDefaultOptions() {
         $this->_options = $this->_defaultOptions;
@@ -165,7 +165,7 @@ class Mysql {
      *
      * @param mixed $key
      * @param mixed $value
-     * @return App_Db_Mysql
+     * @return Nebiros\PhpUtils\Db\Mysql
      */
     public function setOption($key, $value = null) {
         $this->_options[$key] = $value;
@@ -190,7 +190,7 @@ class Mysql {
     /**
      *
      * @param array $options
-     * @return App_Db_Mysql 
+     * @return Nebiros\PhpUtils\Db\Mysql 
      */
     public function addOptions(Array $options) {
         $this->_options = array_merge($this->_options, $options);
@@ -201,7 +201,7 @@ class Mysql {
      *
      * @param mixed $key
      * @param mixed $value
-     * @return App_Db_Mysql 
+     * @return Nebiros\PhpUtils\Db\Mysql 
      */
     public function addOption($key, $value = null) {
         $this->_options[$key] = $value;
@@ -211,7 +211,7 @@ class Mysql {
     /**
      * Connect to mysql.
      *
-     * @return App_Db_Mysql
+     * @return Nebiros\PhpUtils\Db\Mysql
      */
     public function connect() {
         try {
@@ -289,7 +289,7 @@ class Mysql {
     /**
      *
      * @param string|array $query
-     * @return App_Db_Mysql 
+     * @return Nebiros\PhpUtils\Db\Mysql 
      */
     public function setQuery($query) {
         $this->_query = $this->buildQuery($query);
@@ -584,7 +584,7 @@ class Mysql {
     /**
      *
      * @param string|array $query
-     * @return App_Db_Mysql
+     * @return Nebiros\PhpUtils\Db\Mysql
      */
     public function setTotalRows($query = null) {
         if (null === $query) {
