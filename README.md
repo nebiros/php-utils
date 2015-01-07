@@ -2,86 +2,86 @@
 
 > Some useful classes that I use a lot in my PHP projects.
 
-## App/CacheFactory
+## Nebiros\PhpUtils\CacheFactory
 
-Cache objects into disk or memcache/d.
+Cache objects into disk or memcache\d.
 
-### App/CacheFactory/File
+### Nebiros\PhpUtils\CacheFactory\File
 
 File backend.
 
-### App/ConfigFactory/Memcache
+### Nebiros\PhpUtils\ConfigFactory\Memcache
 
 Memcache backend.
 
-### App/ConfigFactory/Memcached
+### Nebiros\PhpUtils\ConfigFactory\Memcached
 
 Memcached backend.
 
-## App/ConfigFactory
+## Nebiros\PhpUtils\ConfigFactory
 
 Factory to read some formats of configuration.
 
-### App/ConfigFactory/Json
+### Nebiros\PhpUtils\ConfigFactory\Json
 
 Read JSON files.
 
-### App/ConfigFactory/Php
+### Nebiros\PhpUtils\ConfigFactory\Php
 
 Read PHP files.
 
-## App/Crypto
+## Nebiros\PhpUtils\Crypto
 
 Encrypts and decrypts plaintext with a given key.  Written to be compatible with it's counterpart in js. It use AES. Uses the slowAES encryption lib, which is more than fast enough for our purposes; using it here because it has several parallel versions in different languages (mainly php and js).
 
-## App/Db/Mysql
+## Nebiros\PhpUtils\Db\Mysql
 
 mysql_* functions wrapper.
 
-## App/Db/Mysqli
+## Nebiros\PhpUtils\Db\Mysqli
 
 mysqli_* functions wrapper.
 
-## App/Filter/Input
+## Nebiros\PhpUtils\Filter\Input
 
 To filter inputs.
 
-## App/Form
+## Nebiros\PhpUtils\Form
 
 HTML form creation and validation.
 
-### App/Form/Element/Checkbox
+### Nebiros\PhpUtils\Form\Element\Checkbox
 
-### App/Form/Element/Radio
+### Nebiros\PhpUtils\Form\Element\Radio
 
-### App/Form/Element/Select
+### Nebiros\PhpUtils\Form\Element\Select
 
-### App/Form/Element/Text
+### Nebiros\PhpUtils\Form\Element\Text
 
-## App/Hmac
+## Nebiros\PhpUtils\Hmac
 
 HMAC implementation.
 
-## App/Mailer
+## Nebiros\PhpUtils\Mailer
 
 To send emails as html or plain text.
 
-## App/Util/Array
+## Nebiros\PhpUtils\Util\Arrays
 
 Array utilities.
 
-## App/Util/Text
+## Nebiros\PhpUtils\Util\Text
 
 Text utilities.
 
-## App/Video/Converter
+## Nebiros\PhpUtils\Video\Converter
 
 Convert videos with mobile support, or any other format with ffmpeg.
 
-## App/Video/Downloader
+## Nebiros\PhpUtils\Video\Downloader
 
 Download videos from YouTube, Vimeo or any other embed URL.
 
-## App/WidgetFactory
+## Nebiros\PhpUtils\WidgetFactory
 
 A widgets factory.
