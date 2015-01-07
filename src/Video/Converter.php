@@ -47,7 +47,7 @@ class Converter {
     
     /**
      *
-     * @var App_Db_Mysql
+     * @var Nebiros\PhpUtils\Db\Mysqli
      */
     protected $_db = null;
 
