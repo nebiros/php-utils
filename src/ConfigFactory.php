@@ -2,7 +2,7 @@
 
 namespace Nebiros\PhpUtils;
 
-use Nebiros\PhpUtils\ConfigFactory\CacheAdapterInterface;
+use Nebiros\PhpUtils\ConfigFactory\ConfigAdapterInterface;
 
 defined("APPLICATION_ENV")
     || define("APPLICATION_ENV", (getenv("APPLICATION_ENV") ? getenv("APPLICATION_ENV") : "production"));
@@ -24,7 +24,7 @@ class ConfigFactory {
 
     /**
      *
-     * @var Nebiros\PhpUtils\ConfigFactory\CacheAdapterInterface 
+     * @var Nebiros\PhpUtils\ConfigFactory\ConfigAdapterInterface 
      */
     protected static $_configAdapter = null;
 
@@ -80,8 +80,8 @@ class ConfigFactory {
 
         $adapter = new $klass($adapterOptions);
 
-        if (false === ($adapter instanceof CacheAdapterInterface)) { 
-            throw new \Exception("Configuration class '{$klass}' does not implement Nebiros\PhpUtils\ConfigFactory\CacheAdapterInterface");
+        if (false === ($adapter instanceof ConfigAdapterInterface)) { 
+            throw new \Exception("Configuration class '{$klass}' does not implement Nebiros\PhpUtils\ConfigFactory\ConfigAdapterInterface");
         }
 
         self::$_configAdapter = $adapter;
@@ -94,7 +94,7 @@ class ConfigFactory {
 
     /**
      *
-     * @return Nebiros\PhpUtils\ConfigFactory\CacheAdapterInterface
+     * @return Nebiros\PhpUtils\ConfigFactory\ConfigAdapterInterface
      */
     public static function getAdapter() {
         return self::$_configAdapter;
