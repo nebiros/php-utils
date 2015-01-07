@@ -2,7 +2,9 @@
 
 namespace Nebiros\PhpUtils\Form\Element;
 
-class Checkbox extends Nebiros\PhpUtils\Form\Element\FormElementAbstract
+use Nebiros\PhpUtils\Form\Element\FormElementAbstract;
+
+class Checkbox extends FormElementAbstract
 {
     protected $_checkboxOptions = null;
 

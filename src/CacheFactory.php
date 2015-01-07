@@ -2,6 +2,8 @@
 
 namespace Nebiros\PhpUtils;
 
+use Nebiros\PhpUtils\CacheFactory\CacheAdapterInterface;
+
 /**
  *
  * @author nebiros
@@ -56,7 +58,7 @@ class CacheFactory {
      */
     public static function cache($klass, Array $adapterOptions = null) {
         if (empty($klass)) {
-            throw new InvalidArgumentException("Cache class type must be set");
+            throw new \InvalidArgumentException("Cache class type must be set");
         }
 
         self::getInstance();
@@ -64,13 +66,13 @@ class CacheFactory {
         $klass = "Nebiros\\PhpUtils\\CacheFactory\\" . ucfirst(strtolower($klass));
 
         if (false === class_exists($klass)) {
-            throw new Exception("Cache class '{$klass}' was not found");
+            throw new \Exception("Cache class '{$klass}' was not found");
         }
 
         $adapter = new $klass($adapterOptions);
 
-        if (false === ($adapter instanceof Nebiros\PhpUtils\CacheFactory\CacheAdapterInterface)) { 
-            throw new Exception("Cache class '{$klass}' does not implement Nebiros\PhpUtils\CacheFactory\CacheAdapterInterface");
+        if (false === ($adapter instanceof CacheAdapterInterface)) { 
+            throw new \Exception("Cache class '{$klass}' does not implement Nebiros\PhpUtils\CacheFactory\CacheAdapterInterface");
         }
 
         self::$_instance->_adapter = $adapter;

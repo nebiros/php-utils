@@ -2,7 +2,9 @@
 
 namespace Nebiros\PhpUtils\CacheFactory;
 
-class Memcached extends Nebiros\PhpUtils\CacheFactory\CacheAdapterAbstract 
+use Nebiros\PhpUtils\CacheFactory\CacheAdapterAbstract;
+
+class Memcached extends CacheAdapterAbstract 
 {
     protected $_memcached = null;
 

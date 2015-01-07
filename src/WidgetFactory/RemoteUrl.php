@@ -2,11 +2,14 @@
 
 namespace Nebiros\PhpUtils\WidgetFactory;
 
+use Nebiros\PhpUtils\WidgetFactory\WidgetAbstract;
+
 /**
  *
  * @author nebiros
  */
-class RemoteUrl extends Nebiros\PhpUtils\WidgetFactory\WidgetAbstract {
+class RemoteUrl extends WidgetAbstract
+{
     /**
      *
      * @param array $options 

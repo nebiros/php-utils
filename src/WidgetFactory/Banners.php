@@ -2,11 +2,14 @@
 
 namespace Nebiros\PhpUtils\WidgetFactory;
 
+use Nebiros\PhpUtils\WidgetFactory\WidgetAbstract;
+
 /**
  *
  * @author nebiros
  */
-class Banners extends Nebiros\PhpUtils\WidgetFactory\WidgetAbstract {
+class Banners extends WidgetAbstract
+{
     public function  __construct(Array $options) {
         parent::__construct($options);
     }

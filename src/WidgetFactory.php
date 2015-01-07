@@ -2,6 +2,8 @@
 
 namespace Nebiros\PhpUtils;
 
+use Nebiros\PhpUtils\WidgetFactory\WidgetInterface;
+
 /**
  *
  * @author nebiros
@@ -29,7 +31,7 @@ class WidgetFactory {
         }
 
         $widget = new $klass($options);
-        if (!$widget instanceof Nebiros\PhpUtils\WidgetFactory\WidgetInterface) {
+        if (!$widget instanceof WidgetInterface) {
             throw new \Exception("Widget class '{$class}' does not implements Nebiros\\PhpUtils\\WidgetFactory\\WidgetInterface");
         }
 

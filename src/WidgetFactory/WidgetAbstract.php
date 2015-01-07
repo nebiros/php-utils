@@ -2,11 +2,14 @@
 
 namespace Nebiros\PhpUtils\WidgetFactory;
 
+use Nebiros\PhpUtils\WidgetFactory\WidgetInterface;
+
 /**
  *
  * @author nebiros
  */
-abstract class WidgetAbstract implements Nebiros\PhpUtils\WidgetFactory\WidgetInterface {    
+abstract class WidgetAbstract implements WidgetInterface
+{    
     /**
      *
      * @var array

@@ -2,7 +2,9 @@
 
 namespace Nebiros\PhpUtils\Form\Element;
 
-abstract class FormElementAbstract implements Nebiros\PhpUtils\Form\Element\FormElementInterface
+use Nebiros\PhpUtils\Form\Element\FormElementInterface;
+
+abstract class FormElementAbstract implements FormElementInterface
 {
     protected $_name = null;
     protected $_options = null;

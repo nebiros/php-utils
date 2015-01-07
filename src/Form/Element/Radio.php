@@ -2,7 +2,9 @@
 
 namespace Nebiros\PhpUtils\Form\Element;
 
-class Radio extends Nebiros\PhpUtils\Form\Element\FormElementAbstract
+use Nebiros\PhpUtils\Form\Element\FormElementAbstract;
+
+class Radio extends FormElementAbstract
 {
     public function __construct($name, Array $options = null) {
         parent::__construct($name, $options);

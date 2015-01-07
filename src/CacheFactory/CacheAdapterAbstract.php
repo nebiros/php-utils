@@ -2,11 +2,13 @@
 
 namespace Nebiros\PhpUtils\CacheFactory;
 
+use Nebiros\PhpUtils\CacheFactory\CacheAdapterInterface;
+
 /**
  *
  * @author nebiros
  */
-class CacheAdapterAbstract implements Nebiros\PhpUtils\CacheFactory\CacheAdapterInterface 
+class CacheAdapterAbstract implements CacheAdapterInterface
 {
     /**
      *

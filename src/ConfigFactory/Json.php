@@ -2,12 +2,15 @@
 
 namespace Nebiros\PhpUtils\ConfigFactory;
 
+use Nebiros\PhpUtils\ConfigFactory\ConfigAdapterInterface;
+
 /**
  * Nebiros\PhpUtils\ConfigFactory\Json
  *
  * @author nebiros
  */
-class Json implements Nebiros\PhpUtils\ConfigFactory\ConfigAdapterInterface {
+class Json implements ConfigAdapterInterface
+{
     /**
      *
      * @var array

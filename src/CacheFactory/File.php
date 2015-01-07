@@ -2,13 +2,15 @@
 
 namespace Nebiros\PhpUtils\CacheFactory;
 
+use Nebiros\PhpUtils\CacheFactory\CacheAdapterAbstract;
+
 /**
  * Based on FileCache class by Erik Giberti,
  * http://af-design.com/blog/2010/07/30/simple-file-based-caching-in-php/
  *
  * @author nebiros
  */
-class File extends Nebiros\PhpUtils\CacheFactory\CacheAdapterAbstract 
+class File extends CacheAdapterAbstract 
 {
     /**
      *

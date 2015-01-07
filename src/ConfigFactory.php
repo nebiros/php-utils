@@ -2,6 +2,8 @@
 
 namespace Nebiros\PhpUtils;
 
+use Nebiros\PhpUtils\ConfigFactory\CacheAdapterInterface;
+
 defined("APPLICATION_ENV")
     || define("APPLICATION_ENV", (getenv("APPLICATION_ENV") ? getenv("APPLICATION_ENV") : "production"));
 
@@ -61,11 +63,11 @@ class ConfigFactory {
      */
     public static function config($klass, Array $adapterOptions = null) {
         if (empty($klass)) {
-            throw new InvalidArgumentException("Configuration class type must be set");
+            throw new \InvalidArgumentException("Configuration class type must be set");
         }
 
         if (empty($adapterOptions["file"])) {
-            throw new InvalidArgumentException("Configuration file path must be set");
+            throw new \InvalidArgumentException("Configuration file path must be set");
         }
 
         self::getInstance();
@@ -73,13 +75,13 @@ class ConfigFactory {
         $klass = "Nebiros\\PhpUtils\\ConfigFactory\\" . ucfirst(strtolower($klass));
 
         if (false === class_exists($klass)) {
-            throw new Exception("Configuration class '{$klass}' was not found");
+            throw new \Exception("Configuration class '{$klass}' was not found");
         }
 
         $adapter = new $klass($adapterOptions);
 
-        if (false === ($adapter instanceof Nebiros\PhpUtils\ConfigFactory\CacheAdapterInterface)) { 
-            throw new Exception("Configuration class '{$klass}' does not implement Nebiros\PhpUtils\ConfigFactory\CacheAdapterInterface");
+        if (false === ($adapter instanceof CacheAdapterInterface)) { 
+            throw new \Exception("Configuration class '{$klass}' does not implement Nebiros\PhpUtils\ConfigFactory\CacheAdapterInterface");
         }
 
         self::$_configAdapter = $adapter;
@@ -120,7 +122,7 @@ class ConfigFactory {
      */
     protected static function _read() {
         if (null === self::$_configAdapter) {
-            throw new Exception("Configuration adapter was not initialized");
+            throw new \Exception("Configuration adapter was not initialized");
         }
 
         if (empty(self::$_data)) {

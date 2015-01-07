@@ -2,6 +2,9 @@
 
 namespace Nebiros\PhpUtils\Video;
 
+use Nebiros\PhpUtils\Db\Mysqli;
+use Nebiros\PhpUtils\Video\Downloader;
+
 /**
  * Nebiros\PhpUtils\Video\Converter
  *
@@ -157,7 +160,7 @@ class Converter {
         try {
             $this->_initDb();
             $this->_process();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -167,13 +170,13 @@ class Converter {
      */
     protected function _initDb() {
         try {
-            $this->_db = new Nebiros\PhpUtils\Db\Mysqli(array(
+            $this->_db = new Mysqli(array(
                 "host" => $this->getOption("host"),
                 "username" => $this->getOption("username"),
                 "password" => $this->getOption("password"),
                 "dbname" => $this->getOption("dbname")
             ));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -192,10 +195,10 @@ class Converter {
             $this->_db->update($this->getOption("videos_table"), array("status" => self::STATUS_ON_PROCESS), "id = '{$id}'");
 
             // TODO: create a prefix? (nebiros)
-            $filename = Nebiros\PhpUtils\Video\Downloader::getTmp() . "/video_{$id}";
+            $filename = Downloader::getTmp() . "/video_{$id}";
 
             if (false === is_file($filename)) {
-                $downloader = new Nebiros\PhpUtils\Video\Downloader($video);
+                $downloader = new Downloader($video);
                 $filename = $downloader->download();
                 
                 if (false === $filename) {

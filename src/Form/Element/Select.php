@@ -2,7 +2,9 @@
 
 namespace Nebiros\PhpUtils\Form\Element;
 
-class Select extends Nebiros\PhpUtils\Form\Element\FormElementAbstract
+use Nebiros\PhpUtils\Form\Element\FormElementAbstract;
+
+class Select extends FormElementAbstract
 {
     public function __construct($name, Array $options = null) {
         parent::__construct($name, $options);

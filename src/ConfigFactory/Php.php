@@ -2,12 +2,15 @@
 
 namespace Nebiros\PhpUtils\ConfigFactory;
 
+use Nebiros\PhpUtils\ConfigFactory\ConfigAdapterInterface;
+
 /**
  * Nebiros\PhpUtils\ConfigFactory\Php
  *
  * @author nebiros
  */
-class Php implements Nebiros\PhpUtils\ConfigFactory\ConfigAdapterInterface {
+class Php implements ConfigAdapterInterface
+{
     /**
      *
      * @var array
