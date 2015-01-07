@@ -66,10 +66,6 @@ HMAC implementation.
 
 To send emails as html or plain text.
 
-## App/Mailer
-
-To send emails as html or plain text.
-
 ## App/Util/Array
 
 Array utilities.
