@@ -24,7 +24,7 @@ abstract class WidgetAbstract implements WidgetInterface
     
     /**
      *
-     * @var App_Cache
+     * @var Nebiros\PhpUtils\CacheFactory\CacheAdapterAbstract|Nebiros\PhpUtils\CacheFactory\CacheAdapterInterface
      */
     protected $_cache = null;
 
@@ -48,7 +48,7 @@ abstract class WidgetAbstract implements WidgetInterface
      *
      * @param mixed $key
      * @param mixed $value
-     * @return App_WidgetFactory_WidgetAbstract
+     * @return Nebiros\PhpUtils\WidgetFactory\WidgetAbstract
      */
     public function setOption($key, $value = null) {
         $this->_options[$key] = $value;
@@ -73,7 +73,7 @@ abstract class WidgetAbstract implements WidgetInterface
     /**
      * Reset to default options.
      *
-     * @return App_WidgetFactory_WidgetAbstract
+     * @return Nebiros\PhpUtils\WidgetFactory\WidgetAbstract
      */
     public function clearOptions() {
         $this->_options = array();
@@ -84,7 +84,7 @@ abstract class WidgetAbstract implements WidgetInterface
      * Set options.
      *
      * @param array $options
-     * @return App_WidgetFactory_WidgetAbstract
+     * @return Nebiros\PhpUtils\WidgetFactory\WidgetAbstract
      */
     public function setOptions(Array $options) {
         $this->_options = array_merge($this->_options, $options);
