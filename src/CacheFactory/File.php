@@ -140,7 +140,7 @@ class File extends CacheAdapterAbstract
         $metadata = $this->_get($metaPath);
         
         if (false === empty($data)) {
-            if ($metadata["ttl"] < time()) {
+            if (isset($metadata["ttl"]) && $metadata["ttl"] < time()) {
                 @unlink($path);
                 return false;
             }

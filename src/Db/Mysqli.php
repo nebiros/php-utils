@@ -25,7 +25,8 @@ class Mysqli {
         "password" => "",
         "dbname" => "",
         "fetch_mode" => self::FETCH_ASSOC,
-        "charset" => "utf8"
+        "charset" => "utf8",
+        "syslog_queries" => false
     );
     
     /**
@@ -321,6 +322,12 @@ class Mysqli {
         try {
             if (true === $debug) {
                 return $query;
+            }
+            
+            if ($this->getOption("syslog_queries", false)) {
+                openlog(__CLASS__ . " - " . __METHOD__, LOG_NDELAY | LOG_PID | LOG_PERROR, LOG_LOCAL0);
+                syslog(LOG_NOTICE, "QUERY - {$query}");
+                closelog();                
             }
 
             if (false === ($result = mysqli_query($this->_resource, trim($query)))) {
