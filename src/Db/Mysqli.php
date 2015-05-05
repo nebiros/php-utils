@@ -26,7 +26,8 @@ class Mysqli {
         "dbname" => "",
         "fetch_mode" => self::FETCH_ASSOC,
         "charset" => "utf8",
-        "syslog_queries" => false
+        "syslog_queries" => false,
+        "syslog_ignore_from_tables" => ""
     );
     
     /**
@@ -325,9 +326,21 @@ class Mysqli {
             }
             
             if ($this->getOption("syslog_queries", false)) {
-                openlog(__CLASS__ . " - " . __METHOD__, LOG_NDELAY | LOG_PID | LOG_PERROR, LOG_LOCAL0);
-                syslog(LOG_NOTICE, "QUERY - {$query}");
-                closelog();                
+                $ignoreLog = false;
+                
+                if (strlen($this->getOption("syslog_ignore_from_tables", "")) > 0) {
+                    $ignoreTables = $this->getOption("syslog_ignore_from_tables");
+                    $ignoreTables = implode("|", explode(" ", $ignoreTables));
+                    if (preg_match("#FROM ((.+)?(\.)?({$ignoreTables}))#i", $query)) {
+                        $ignoreLog = true;
+                    }
+                }
+                
+                if (!$ignoreLog) {
+                    openlog(__CLASS__ . " - " . __METHOD__, LOG_NDELAY | LOG_PID | LOG_PERROR, LOG_LOCAL0);
+                    syslog(LOG_NOTICE, "QUERY - {$query}");
+                    closelog();
+                }                
             }
 
             if (false === ($result = mysqli_query($this->_resource, trim($query)))) {
