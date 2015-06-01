@@ -49,6 +49,6 @@ class GoogleAnalytics extends WidgetAbstract
 
         $url .= "&guid=ON";
         $url = str_replace("&", "&amp;", $url);
-        return "<img src=\"" . Yasc_App::viewHelper("url")->url(array("path" => $url)) . "\" />";
+        return "<img src=\"" . \Yasc_App::viewHelper("url")->url(array("path" => $url)) . "\" />";
     }
 }

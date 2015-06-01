@@ -13,38 +13,38 @@ class Banners extends WidgetAbstract
     public function  __construct(Array $options) {
         parent::__construct($options);
     }
-    
+
     public function run() {
         $xhtml = "";
-        
+
         if (empty($this->_config["type"])) {
             return $xhtml;
         }
-        
+
         $xhtml = $this->_process();
-        return $xhtml;        
+        return $xhtml;
     }
-    
+
     protected function _process() {
         switch (strtolower($this->_config["type"])) {
             case "source":
-                Yasc_App::view()->src = $this->_config["src"];
-                Yasc_App::view()->render("_widget_banners_source");
+                \Yasc_App::view()->src = $this->_config["src"];
+                \Yasc_App::view()->render("_widget_banners_source");
                 break;
             case "image":
-                Yasc_App::view()->link = $this->_config["link"];
-                Yasc_App::view()->image = $this->_config["image"];
-                Yasc_App::view()->render("_widget_banners_image");
+                \Yasc_App::view()->link = $this->_config["link"];
+                \Yasc_App::view()->image = $this->_config["image"];
+                \Yasc_App::view()->render("_widget_banners_image");
                 break;
             case "ad_mob":
-                Yasc_App::view()->src = $this->_adMob();
-                Yasc_App::view()->render("_widget_banners_source");
+                \Yasc_App::view()->src = $this->_adMob();
+                \Yasc_App::view()->render("_widget_banners_source");
                 break;
         }
-        
-        return (string) Yasc_App::view();
+
+        return (string) \Yasc_App::view();
     }
-    
+
     /**
      *
      * @return string
@@ -53,8 +53,8 @@ class Banners extends WidgetAbstract
         if (empty($this->_config["analytics_id"])) {
             return "";
         }
-        
-        $admobConfig = array(           
+
+        $admobConfig = array(
             // Required to request ads. To find your Publisher ID, log in to your AdMob account and click on the "Sites & Apps" tab.
             // "PUBLISHER_ID" => "a14d4c4c1e11b78"
             "PUBLISHER_ID" => $this->_config["publisher_id"],
@@ -71,17 +71,17 @@ class Banners extends WidgetAbstract
        );
 
         // Optional parameters for AdMob Analytics (http://analytics.admob.com)
-        
+
         // Analytics allows you to track site usage based on custom page titles. Enter custom title in this parameter.
         if (isset($this->_config["optional"]["title"])) {
             $admobConfig["OPTIONAL"]["title"] = $this->_config["optional"]["title"];
         }
-        
+
         // To learn more about events, log in to your Analytics account and visit this page: http://analytics.admob.com/reports/events/add
         if (isset($this->_config["optional"]["event"])) {
             $admobConfig["OPTIONAL"]["event"] = $this->_config["optional"]["event"];
         }
-        
+
         /**
          * This code supports the ability for your website to set a cookie on behalf of AdMob
          * To set an AdMob cookie, simply call admob_setcookie() on any page that you call admob_request()
@@ -103,34 +103,34 @@ class Banners extends WidgetAbstract
         // Send request to AdMob. To make additional ad requests per page, copy and paste this function call elsewhere on your page.
         return $this->_admobRequest($admobConfig);
     }
-    
+
     /**
      *
      * @param string $domain
      * @param string $path
-     * @return void 
+     * @return void
      */
     protected function _admobSetCookie($domain = null, $path = "/") {
         if (!empty($_COOKIE["admobuu"])) {
             return;
         }
-        
+
         $value = md5(uniqid(rand(), true)) ;
 
         if (!empty($domain) && $domain[0] != ".") {
             $domain = ".{$domain}";
         }
-        
+
         if (setcookie("admobuu", $value, mktime(0, 0, 0, 1, 1, 2038), $path, $domain)) {
             $_COOKIE["admobuu"] = $value; // make it visible to App_WidgetFactory_Banners#_admobSetCookie
         }
     }
-    
+
     /**
      *
      * @staticvar boolean $pixelSent
      * @param array $config
-     * @return string 
+     * @return string
      */
     protected function _admobRequest(Array $config) {
         static $pixelSent = false;
@@ -167,19 +167,19 @@ class Banners extends WidgetAbstract
         if (!empty($sid)) {
             $params[] = "t=" . md5($sid);
         }
-        
+
         if ($adMode) {
             $params[] = "s=" . $config["PUBLISHER_ID"];
         }
-        
+
         if ($analyticsMode) {
             $params[] = "a=" . $config["ANALYTICS_ID"];
         }
-        
+
         if (!empty($_COOKIE["admobuu"])) {
             $params[] = "o=" . $_COOKIE["admobuu"];
         }
-        
+
         if (!empty($config["TEST_MODE"])) {
             $params[] = "m=test";
         }
@@ -191,13 +191,13 @@ class Banners extends WidgetAbstract
         }
 
         $ignore = array(
-            "HTTP_PRAGMA" => true, 
-            "HTTP_CACHE_CONTROL" => true, 
-            "HTTP_CONNECTION" => true, 
-            "HTTP_USER_AGENT" => true, 
+            "HTTP_PRAGMA" => true,
+            "HTTP_CACHE_CONTROL" => true,
+            "HTTP_CONNECTION" => true,
+            "HTTP_USER_AGENT" => true,
             "HTTP_COOKIE" => true
        );
-        
+
         foreach ($_SERVER as $k => $v) {
             if (substr($k, 0, 4) == "HTTP" && empty($ignore[$k]) && isset($v)) {
                 $params[] = urlencode("h[" . $k . "]") . "=" . urlencode($v);
