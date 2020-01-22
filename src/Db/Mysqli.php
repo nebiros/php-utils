@@ -337,7 +337,7 @@ class Mysqli {
                 }
                 
                 if (!$ignoreLog) {
-                    openlog(__CLASS__ . " - " . __METHOD__, LOG_NDELAY | LOG_PID | LOG_PERROR, LOG_LOCAL0);
+                    openlog(__CLASS__ . " - " . __METHOD__, LOG_NDELAY | LOG_PID | LOG_PERROR, intval(LOG_LOCAL0));
                     syslog(LOG_NOTICE, "QUERY - {$query}");
                     closelog();
                 }                
